@@ -1,4 +1,5 @@
 .idea/
+.env
 /vendor/
 /phpunit.xml
 /.web-server-pid
