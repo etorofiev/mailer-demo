@@ -1,5 +1,9 @@
 {
     "require": {
+        "ext-curl": "*",
         "vlucas/phpdotenv": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
     }
 }
