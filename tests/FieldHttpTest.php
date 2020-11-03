@@ -1,6 +1,6 @@
 <?php
 
-namespace Northbridg3\Mailer;
+namespace Mailer;
 
 class FieldHttpTest extends HttpTest
 {

@@ -1,4 +1,7 @@
 {
+    "autoload": {
+        "psr-4": {"Mailer\\": ["src/", "tests/"]}
+    },
     "require": {
         "ext-curl": "*",
         "vlucas/phpdotenv": "^5.2"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Northbridg3\Mailer;
+namespace Mailer;
 
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
