@@ -1,6 +1,6 @@
 <?php
 
-use Http\Factory\Guzzle\ServerRequestFactory;
+use GuzzleHttp\Psr7\ServerRequest;
 use Mailer\Router;
 use Narrowspark\HttpEmitter\SapiEmitter;
 
@@ -12,8 +12,7 @@ $dotenv->required(['APP_URL', 'MYSQL_DB_HOST', 'MYSQL_DB_PORT', 'MYSQL_DB_NAME',
 
 $router = new Router();
 
-$requestFactory = new ServerRequestFactory();
-$request = $requestFactory->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER["REQUEST_URI"], $_SERVER);
+$request = ServerRequest::fromGlobals();
 $response = $router->handleRequest($request);
 
 $emitter = new SapiEmitter();
