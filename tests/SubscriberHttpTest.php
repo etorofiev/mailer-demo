@@ -4,7 +4,7 @@ namespace Mailer;
 
 class SubscriberHttpTest extends HttpTest
 {
-    protected string $urlSegment = '/subscribers';
+    protected string $urlSegment = '/api/subscribers';
 
     public function testList(): void
     {
@@ -34,7 +34,16 @@ class SubscriberHttpTest extends HttpTest
     public function testPut(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
-        $data = ['name' => 'Jane Doe'];
+        $data = ['name' => 'John Doe', 'state' => 'active', 'email' => 'janedoe@example.com'];
+        $code = $this->request($url, 'PUT', $data);
+
+        $this->assertEquals(200, $code);
+    }
+
+    public function testPatch(): void
+    {
+        $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
+        $data = ['state' => 'unsubscribed'];
         $code = $this->request($url, 'PUT', $data);
 
         $this->assertEquals(200, $code);

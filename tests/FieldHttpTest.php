@@ -4,7 +4,7 @@ namespace Mailer;
 
 class FieldHttpTest extends HttpTest
 {
-    protected string $urlSegment = '/fields';
+    protected string $urlSegment = '/api/fields';
 
     public function testList(): void
     {
@@ -34,7 +34,16 @@ class FieldHttpTest extends HttpTest
     public function testPut(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
-        $data = ['title' => 'Institution'];
+        $data = ['title' => 'Institution', 'type' => 'string'];
+        $code = $this->request($url, 'PUT', $data);
+
+        $this->assertEquals(200, $code);
+    }
+
+    public function testPatch(): void
+    {
+        $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
+        $data = ['title' => 'Company/Institution', 'type' => 'string'];
         $code = $this->request($url, 'PUT', $data);
 
         $this->assertEquals(200, $code);
