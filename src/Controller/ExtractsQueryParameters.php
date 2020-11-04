@@ -5,8 +5,8 @@ namespace Mailer\Controller;
 use GuzzleHttp\Psr7\Query;
 use Psr\Http\Message\RequestInterface;
 
-trait ExtractsQueryParameters {
-
+trait ExtractsQueryParameters
+{
     /**
      * @param RequestInterface $request
      * @param string $identifier

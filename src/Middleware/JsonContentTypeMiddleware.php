@@ -19,7 +19,10 @@ class JsonContentTypeMiddleware implements MiddlewareInterface
             return new Response(
                 415,
                 ['Content-Type' => 'application/json'],
-                json_encode(['status' => 'error', 'description' => 'Invalid content type, valid options are: application/json'])
+                json_encode([
+                    'status' => 'error',
+                    'description' => 'Invalid content type, valid options are: application/json'
+                ])
             );
         }
 
