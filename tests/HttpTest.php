@@ -10,7 +10,7 @@ abstract class HttpTest extends TestCase
     protected string $urlSegment;
 
     abstract public function testList();
-    abstract public function testGet();
+    abstract public function testFind();
     abstract public function testPost();
     abstract public function testPut();
     abstract public function testDelete();
@@ -22,7 +22,7 @@ abstract class HttpTest extends TestCase
         $dotenv->required(['APP_URL']);
     }
 
-    protected function request(string $url, string $method, array $data = null): int
+    protected function request(string $url, string $method, array $data = null): array
     {
         // Normally using guzzlehttp is a better idea, but a simple curl is enough here
         $handle = curl_init($url);
@@ -34,10 +34,10 @@ abstract class HttpTest extends TestCase
             curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
         }
 
-        curl_exec($handle);
+        $result = curl_exec($handle);
         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         curl_close($handle);
 
-        return $httpCode;
+        return ['data' => $result, 'code' => $httpCode];
     }
 }

@@ -9,17 +9,27 @@ class FieldHttpTest extends HttpTest
     public function testList(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment;
-        $code = $this->request($url, 'GET');
+        $result = $this->request($url, 'GET');
 
-        $this->assertEquals(200, $code);
+        $this->assertEquals(200, $result['code']);
     }
 
-    public function testGet(): void
+    public function testListWithPageAndLimit(): void
+    {
+        $url = $_ENV['APP_URL'] . $this->urlSegment . '?limit=4&from=4';
+        $result = $this->request($url, 'GET');
+
+        $this->assertEquals(200, $result['code']);
+        $this->assertCount(4, json_decode($result['data'], true));
+    }
+
+    public function testFind(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
-        $code = $this->request($url, 'GET');
+        $result = $this->request($url, 'GET');
 
-        $this->assertEquals(200, $code);
+        $this->assertEquals(200, $result['code']);
+        $this->assertNotEmpty(json_decode($result['data'], true));
     }
 
     public function testPost(): void
