@@ -2,6 +2,7 @@
 
 namespace Mailer\Controller;
 
+use GuzzleHttp\Psr7\Query;
 use Psr\Http\Message\RequestInterface;
 
 trait ExtractsQueryParameters {
@@ -14,13 +15,14 @@ trait ExtractsQueryParameters {
      */
     protected function getQueryParameter(RequestInterface $request, string $identifier, int $filter = null)
     {
-        $queryParamsCouples = explode('&', $request->getUri()->getQuery());
-        $queryParams = [];
-
-        foreach ($queryParamsCouples as $couple) {
-            $parts = explode('=', $couple);
-            $queryParams[$parts[0]] = $parts[1];
-        }
+//        $queryParamsCouples = explode('&', $request->getUri()->getQuery());
+//        $queryParams = [];
+//
+//        foreach ($queryParamsCouples as $couple) {
+//            $parts = explode('=', $couple);
+//            $queryParams[$parts[0]] = $parts[1];
+//        }
+        $queryParams = Query::parse($request->getUri()->getQuery());
 
         if (!empty($queryParams[$identifier])) {
             if (empty($filter)) {
