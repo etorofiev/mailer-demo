@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.32, for Linux (x86_64)
 --
 -- Host: localhost    Database: mailer
 -- ------------------------------------------------------
--- Server version	5.7.24-0ubuntu0.16.04.1
+-- Server version	5.7.32-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -56,7 +56,7 @@ CREATE TABLE `subscribers` (
   `email` varchar(254) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `subscribers_email_uindex` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,6 +65,7 @@ CREATE TABLE `subscribers` (
 
 LOCK TABLES `subscribers` WRITE;
 /*!40000 ALTER TABLE `subscribers` DISABLE KEYS */;
+INSERT INTO `subscribers` VALUES (1,'John Wick','active','john.wick@example.com'),(2,'Laurence Fishburne','active','laurence.fishburne@example.com'),(3,'Hugo Weaving','unsubscribed','hugo.weaving@example.com'),(4,'Alex Høgh Andersen','active','alex.andersen@example.com'),(5,'Viggo Mortensen','bounced','viggo.mortensen@examplee.com'),(6,'Matt Damon','active','matt.damon@example.com'),(7,'Sean Bean','active','sean.bean@example.com'),(8,'Peter Dinklage','active','peter.dinklage@example.com'),(9,'Travis Fimmel','unsubscribed','travis.fimmel@example.com'),(10,'Gustaf Skarsgård','bounced','gustaf.skarsgard@example.com'),(11,'Christian Bale','active','christian.bale@example.com'),(12,'Katheryn Winnick','unsubscribed','katheryn.winnick@example.com'),(13,'Tom Riley','bounced','tom.riley@example.com'),(14,'Laura Haddock','unsubscribed','laura.haddock@example.com'),(15,'Alexander Siddig','active','alexander.siddig@example.com'),(16,'Jonathan Rhys Meyers','bounced','johathan.meyers@example.com'),(17,'Anya Chalotra','unsubscribed','anya.chalotra@example.com'),(18,'Henry Cavill','unsubscribed','henry.cavill@example.com'),(19,'Ashley Johnson','bounced','ashley.johnson@exampke.com'),(20,'Matt Mercer','active','matt.mercer@example.com');
 /*!40000 ALTER TABLE `subscribers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -77,4 +78,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed
+-- Dump completed on 2020-11-04 13:59:36
