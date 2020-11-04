@@ -8,6 +8,7 @@ use League\Route\RouteGroup;
 use League\Route\Router as LeagueRouter;
 use League\Route\Strategy\JsonStrategy;
 use Mailer\Controller\SubscriberController;
+use Mailer\Middleware\JsonContentTypeMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -55,7 +56,7 @@ class Router
             $route->map('PUT', '/fields/{id:number}', [SubscriberController::class, 'update']);
             $route->map('PATCH', '/fields/{id:number}/{prop:name}', [SubscriberController::class, 'patch']);
             $route->map('DELETE', '/fields/{id:number}', [SubscriberController::class, 'delete']);
-        });
+        })->middleware(new JsonContentTypeMiddleware());
     }
 
     private function registerStandardRoutes(ServerRequestInterface $request): void
