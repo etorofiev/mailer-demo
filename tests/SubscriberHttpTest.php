@@ -50,15 +50,6 @@ class SubscriberHttpTest extends HttpTest
         $this->assertEquals(200, $code);
     }
 
-    public function testPatch(): void
-    {
-        $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
-        $data = ['state' => 'unsubscribed'];
-        $code = $this->request($url, 'PUT', $data);
-
-        $this->assertEquals(200, $code);
-    }
-
     public function testDelete(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
