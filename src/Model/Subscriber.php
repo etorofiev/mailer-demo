@@ -2,63 +2,114 @@
 
 namespace Mailer\Model;
 
+use JsonSerializable;
 use Mailer\DBPool;
 use PDO;
 
-class Subscriber
+class Subscriber implements JsonSerializable
 {
+    use CommonReadMethods;
+    use SerializesToJson;
+
+    private static string $tableName = 'subscribers';
+    private int $id;
     private string $name;
     private string $email;
     private string $state;
 
-    public static function find(int $id)
+    public function create(): void
+    {
+        if (!empty($this->id)) {
+            throw new \LogicException('Cannot create a subscriber with an existing ID');
+        }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+        $stmt = $pdo->prepare('INSERT INTO subscribers (name, state, email) VALUES (:name, :state, :email)');
+
+        $stmt->bindValue(':name', $this->getName(), PDO::PARAM_STR);
+        $stmt->bindValue(':state', $this->getState(), PDO::PARAM_STR);
+        $stmt->bindValue(':email', $this->getEmail(), PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $pdo->lastInsertId();
+        $this->id = $result;
+        $pool->releaseConnection($connection);
+    }
+
+    public function update($fields): int
+    {
+        if (empty($fields)) {
+            throw new \LogicException('Cannot update a subscriber with empty properties');
+        }
+        if (empty($this->id)) {
+            throw new \LogicException('Cannot update a subscriber with a missing ID');
+        }
+        if (static::hasAllProperties(array_keys($fields)) === false) {
+            throw new \LogicException('Cannot update a subscriber with an unknown property');
+        }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+
+        $keys = array_keys($fields);
+        $sqlColumnsArray = array_map(fn ($x) => $x . ' = :' . $x, $keys);
+        $sqlColumns = implode(', ', $sqlColumnsArray);
+        $stmt = $pdo->prepare("UPDATE subscribers SET $sqlColumns WHERE id = :id");
+
+        $paramFields = array_combine(array_map(fn ($x) => ':' . $x, $keys), $fields);
+
+        foreach ($paramFields as $param => $value) {
+            $stmt->bindValue($param, $value, PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->rowCount();
+        $this->refresh($fields);
+        $pool->releaseConnection($connection);
+
+        return $result;
+    }
+
+    public function delete(): int
     {
         $pool = DBPool::getInstance();
         $connection = $pool->getConnection();
         $pdo = $connection->getPdo();
-        $stmt = $pdo->prepare('SELECT * FROM subscribers WHERE id = :id');
+        $stmt = $pdo->prepare('DELETE FROM subscribers WHERE id = :id');
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $this->getId(), PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = $stmt->fetch();
+        $result = $stmt->rowCount();
         $pool->releaseConnection($connection);
         return $result;
     }
 
-    public static function get(int $from = null, int $limit = null)
+    public function getFields(): array
     {
-        $pool = DBPool::getInstance();
-        $connection = $pool->getConnection();
-        $pdo = $connection->getPdo();
-        $stmt = $pdo->prepare('SELECT * FROM subscribers WHERE id > :from LIMIT :limit');
-
-        if (is_null($limit) or $limit <= 0) {
-            $limit = $connection->getDefaultResultLimit();
+        if (empty($fields)) {
+            throw new \LogicException('Cannot update a subscriber with empty properties');
         }
-        if (is_null($from) or $from <= 0) {
-            $from = 0;
-        }
-
-        $stmt->bindParam(':from', $from, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $results = $stmt->fetchAll();
-        $pool->releaseConnection($connection);
-        return $results;
     }
 
-    public static function count()
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        $pool = DBPool::getInstance();
-        $connection = $pool->getConnection();
-        $pdo = $connection->getPdo();
-        $stmt = $pdo->query('SELECT COUNT(*) FROM subscribers');
+        return $this->id;
+    }
 
-        $results = $stmt->fetchColumn();
-        $pool->releaseConnection($connection);
-        return $results;
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     /**

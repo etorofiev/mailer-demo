@@ -7,6 +7,7 @@ use Http\Factory\Guzzle\ResponseFactory;
 use League\Route\RouteGroup;
 use League\Route\Router as LeagueRouter;
 use League\Route\Strategy\JsonStrategy;
+use Mailer\Controller\FieldsController;
 use Mailer\Controller\SubscriberController;
 use Mailer\Middleware\JsonContentTypeMiddleware;
 use Psr\Http\Message\ResponseInterface;
@@ -49,11 +50,11 @@ class Router
             $route->map('PUT', '/subscribers/{id:number}', [SubscriberController::class, 'update']);
             $route->map('DELETE', '/subscribers/{id:number}', [SubscriberController::class, 'delete']);
 
-            $route->map('GET', '/fields', [SubscriberController::class, 'list']);
-            $route->map('GET', '/fields/{id:number}', [SubscriberController::class, 'find']);
-            $route->map('POST', '/fields', [SubscriberController::class, 'create']);
-            $route->map('PUT', '/fields/{id:number}', [SubscriberController::class, 'update']);
-            $route->map('DELETE', '/fields/{id:number}', [SubscriberController::class, 'delete']);
+            $route->map('GET', '/fields', [FieldsController::class, 'list']);
+            $route->map('GET', '/fields/{id:number}', [FieldsController::class, 'find']);
+            $route->map('POST', '/fields', [FieldsController::class, 'create']);
+            $route->map('PUT', '/fields/{id:number}', [FieldsController::class, 'update']);
+            $route->map('DELETE', '/fields/{id:number}', [FieldsController::class, 'delete']);
         })->middleware(new JsonContentTypeMiddleware());
     }
 
