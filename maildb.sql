@@ -86,7 +86,7 @@ CREATE TABLE `subscribers_fields` (
   KEY `subscribers_fields_subscribers_id_fk` (`subscriber_id`),
   CONSTRAINT `subscribers_fields_fields_id_fk` FOREIGN KEY (`field_id`) REFERENCES `fields` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subscribers_fields_subscribers_id_fk` FOREIGN KEY (`subscriber_id`) REFERENCES `subscribers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
