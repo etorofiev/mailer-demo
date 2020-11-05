@@ -12,8 +12,8 @@ abstract class HttpTest extends TestCase
     abstract public function testList();
     abstract public function testFind();
     abstract public function testPost();
-    abstract public function testPut();
-    abstract public function testDelete();
+    abstract public function testPut(int $id);
+    abstract public function testDelete(int $id);
 
     public static function setUpBeforeClass(): void
     {

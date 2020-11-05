@@ -32,37 +32,46 @@ class FieldHttpTest extends HttpTest
         $this->assertNotEmpty(json_decode($result['body'], true));
     }
 
-    public function testPost(): void
+    public function testPost(): int
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment;
         $data = ['title' => 'Organization', 'type' => 'string'];
         $result = $this->request($url, 'POST', json_encode($data), ['Content-Type: application/json']);
 
         $this->assertEquals(200, $result['code']);
-        $diff = array_diff_assoc($data, json_decode($result['body'], true)['data']);
+        $bodyData = json_decode($result['body'], true)['data'];
+        $diff = array_diff_assoc($data, $bodyData);
         $this->assertEquals([], $diff);
+
+        return $bodyData['id'];
     }
 
     /**
      * @depends testPost
+     * @param int $id
+     * @return int
      */
-    public function testPut(): void
+    public function testPut(int $id): int
     {
-        $url = $_ENV['APP_URL'] . $this->urlSegment . '/6';
+        $url = $_ENV['APP_URL'] . $this->urlSegment . "/$id";
         $data = ['title' => 'Institution', 'type' => 'string'];
         $result = $this->request($url, 'PUT', json_encode($data), ['Content-Type: application/json']);
 
         $this->assertEquals(200, $result['code']);
-        $diff = array_diff_assoc($data, json_decode($result['body'], true)['data']);
+        $bodyData = json_decode($result['body'], true)['data'];
+        $diff = array_diff_assoc($data, $bodyData);
         $this->assertEquals([], $diff);
+
+        return $bodyData['id'];
     }
 
     /**
      * @depends testPut
+     * @param int $id
      */
-    public function testDelete(): void
+    public function testDelete(int $id): void
     {
-        $url = $_ENV['APP_URL'] . $this->urlSegment . '/6';
+        $url = $_ENV['APP_URL'] . $this->urlSegment . "/$id";
         $result = $this->request($url, 'DELETE');
 
         $this->assertEquals(200, $result['code']);
