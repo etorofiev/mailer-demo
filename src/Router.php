@@ -47,37 +47,13 @@ class Router
             $route->map('GET', '/subscribers/{id:number}', [SubscriberController::class, 'find']);
             $route->map('POST', '/subscribers', [SubscriberController::class, 'create']);
             $route->map('PUT', '/subscribers/{id:number}', [SubscriberController::class, 'update']);
-            $route->map('PATCH', '/subscribers/{id:number}/{prop:name}', [SubscriberController::class, 'patch']);
             $route->map('DELETE', '/subscribers/{id:number}', [SubscriberController::class, 'delete']);
-            $route->map(
-                'OPTIONS',
-                '/subscribers',
-                fn (ServerRequestInterface $request): ResponseInterface => new Response(
-                    204,
-                    [
-                        'Access-Control-Allow-Origin' => $_ENV['APP_URL'],
-                        'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE'
-                    ]
-                )
-            );
 
             $route->map('GET', '/fields', [SubscriberController::class, 'list']);
             $route->map('GET', '/fields/{id:number}', [SubscriberController::class, 'find']);
             $route->map('POST', '/fields', [SubscriberController::class, 'create']);
             $route->map('PUT', '/fields/{id:number}', [SubscriberController::class, 'update']);
-            $route->map('PATCH', '/fields/{id:number}/{prop:name}', [SubscriberController::class, 'patch']);
             $route->map('DELETE', '/fields/{id:number}', [SubscriberController::class, 'delete']);
-            $route->map(
-                'OPTIONS',
-                '/fields',
-                fn (ServerRequestInterface $request): ResponseInterface => new Response(
-                    204,
-                    [
-                        'Access-Control-Allow-Origin' => $_ENV['APP_URL'],
-                        'Access-Control-Allow-Methods' => 'GET, POST, PUT, PATCH, DELETE'
-                    ]
-                )
-            );
         })->middleware(new JsonContentTypeMiddleware());
     }
 
