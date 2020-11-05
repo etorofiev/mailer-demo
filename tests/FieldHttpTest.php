@@ -20,7 +20,7 @@ class FieldHttpTest extends HttpTest
         $result = $this->request($url, 'GET');
 
         $this->assertEquals(200, $result['code']);
-        $this->assertCount(4, json_decode($result['data'], true));
+        $this->assertCount(4, json_decode($result['body'], true));
     }
 
     public function testFind(): void
@@ -29,32 +29,43 @@ class FieldHttpTest extends HttpTest
         $result = $this->request($url, 'GET');
 
         $this->assertEquals(200, $result['code']);
-        $this->assertNotEmpty(json_decode($result['data'], true));
+        $this->assertNotEmpty(json_decode($result['body'], true));
     }
 
     public function testPost(): void
     {
         $url = $_ENV['APP_URL'] . $this->urlSegment;
-        $data = ['title' => 'Company', 'type' => 'string'];
-        $code = $this->request($url, 'POST', $data);
+        $data = ['title' => 'Organization', 'type' => 'string'];
+        $result = $this->request($url, 'POST', json_encode($data), ['Content-Type: application/json']);
 
-        $this->assertEquals(200, $code);
+        $this->assertEquals(200, $result['code']);
+        $diff = array_diff_assoc($data, json_decode($result['body'], true)['data']);
+        $this->assertEquals([], $diff);
     }
 
+    /**
+     * @depends testPost
+     */
     public function testPut(): void
     {
-        $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
+        $url = $_ENV['APP_URL'] . $this->urlSegment . '/6';
         $data = ['title' => 'Institution', 'type' => 'string'];
-        $code = $this->request($url, 'PUT', $data);
+        $result = $this->request($url, 'PUT', json_encode($data), ['Content-Type: application/json']);
 
-        $this->assertEquals(200, $code);
+        $this->assertEquals(200, $result['code']);
+        $diff = array_diff_assoc($data, json_decode($result['body'], true)['data']);
+        $this->assertEquals([], $diff);
     }
 
+    /**
+     * @depends testPut
+     */
     public function testDelete(): void
     {
-        $url = $_ENV['APP_URL'] . $this->urlSegment . '/1';
-        $code = $this->request($url, 'DELETE');
+        $url = $_ENV['APP_URL'] . $this->urlSegment . '/6';
+        $result = $this->request($url, 'DELETE');
 
-        $this->assertEquals(200, $code);
+        $this->assertEquals(200, $result['code']);
+        $this->assertEquals(1, json_decode($result['body'], true)['affected']);
     }
 }

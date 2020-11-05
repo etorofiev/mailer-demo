@@ -22,7 +22,7 @@ abstract class HttpTest extends TestCase
         $dotenv->required(['APP_URL']);
     }
 
-    protected function request(string $url, string $method, array $data = null): array
+    protected function request(string $url, string $method, $data = null, array $headers = []): array
     {
         // Normally using guzzlehttp is a better idea, but a simple curl is enough here
         $handle = curl_init($url);
@@ -30,14 +30,27 @@ abstract class HttpTest extends TestCase
         curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
 
+        switch($method) {
+            case 'POST':
+                curl_setopt($handle, CURLOPT_POST, 1);
+                break;
+            case 'GET':
+                break;
+            default:
+                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
+        }
+
         if (!is_null($data)) {
             curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+        }
+        if (!empty($headers)) {
+            curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
         }
 
         $result = curl_exec($handle);
         $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         curl_close($handle);
 
-        return ['data' => $result, 'code' => $httpCode];
+        return ['body' => $result, 'code' => $httpCode];
     }
 }

@@ -81,7 +81,7 @@ class Subscriber implements JsonSerializable
         $pdo = $connection->getPdo();
         $stmt = $pdo->prepare('DELETE FROM subscribers WHERE id = :id');
 
-        $stmt->bindParam(':id', $this->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':id', $this->getId(), PDO::PARAM_INT);
         $stmt->execute();
 
         $result = $stmt->rowCount();

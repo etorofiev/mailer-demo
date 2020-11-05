@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class FieldsController
 {
+    use ExtractsQueryParameters;
+
     public function list(RequestInterface $request): ResponseInterface
     {
         $from = $this->getQueryParameter($request, 'from', FILTER_VALIDATE_INT);
