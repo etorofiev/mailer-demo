@@ -37,7 +37,7 @@ class DBPool
             $connection = new DB();
             $this->busy++;
             return $connection;
-        } elseif (count($this->connections) > 0 and count($this->connections) < $this->max) {
+        } elseif (count($this->connections) > 0 and count($this->connections) <= $this->max) {
             $connection = array_pop($this->connections);
             $this->busy++;
             return $connection;

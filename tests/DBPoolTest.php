@@ -25,21 +25,23 @@ class DBPoolTest extends TestCase
 
     public function testConnectionsNumber()
     {
+        $maxConnections = $_ENV['MYSQL_MAX_CONNECTIONS'];
         $pool = DBPool::getInstance();
-        $connection = $pool->getConnection();
-        $connection2 = $pool->getConnection();
-        $connection3 = $pool->getConnection();
 
-        $this->assertEquals(3, $pool->getBusy());
-        $pool->releaseConnection($connection);
-        $pool->releaseConnection($connection2);
-        $pool->releaseConnection($connection3);
+        for ($i = 0; $i < $maxConnections; $i++) {
+            $connections[] = $pool->getConnection();
+        }
+
+        $this->assertEquals(5, $pool->getBusy());
+
+        foreach ($connections as $connection) {
+            $pool->releaseConnection($connection);
+        }
     }
 
     public function testTooManyConnections()
     {
         $maxConnections = $_ENV['MYSQL_MAX_CONNECTIONS'];
-
         $pool = DBPool::getInstance();
         $connections = [];
 
