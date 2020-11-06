@@ -19,6 +19,32 @@ class SubscriberField implements JsonSerializable
     private string $created_at;
     private string $updated_at;
 
+    public function create(): void
+    {
+        if (!empty($this->id)) {
+            throw new \LogicException('Cannot create a subscriber field with an existing ID');
+        }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+        $stmt = $pdo->prepare('
+            INSERT INTO subscribers_fields (subscriber_id, field_id, value, created_at, updated_at)
+            VALUES (:subscriber_id, :field_id, :value, :created_at, :updated_at)
+        ');
+
+        $stmt->bindValue(':subscriber_id', $this->getSubscriberId(), PDO::PARAM_INT);
+        $stmt->bindValue(':field_id', $this->getFieldId(), PDO::PARAM_INT);
+        $stmt->bindValue(':value', $this->getValue(), PDO::PARAM_INT);
+        $stmt->bindValue(':created_at', $this->created_at, PDO::PARAM_STR);
+        $stmt->bindValue(':updated_at', $this->updated_at, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $pdo->lastInsertId();
+        $this->id = $result;
+        $pool->releaseConnection($connection);
+    }
+
     public function update($fields): int
     {
         if (empty($fields)) {
@@ -106,7 +132,7 @@ class SubscriberField implements JsonSerializable
     /**
      * @param string $value
      */
-    public function setValue(string $value): void
+    public function setValue(?string $value): void
     {
         $this->value = $value;
     }

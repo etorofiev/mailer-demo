@@ -5,6 +5,7 @@ namespace Mailer\Service;
 use Mailer\DB;
 use Mailer\Model\Field;
 use Mailer\Model\Subscriber;
+use Mailer\Model\SubscriberField;
 
 class SubscriberService
 {
@@ -37,5 +38,27 @@ class SubscriberService
         }
 
         return $subscriber;
+    }
+
+    public function attachNewField(Field $field): void
+    {
+        $count = Subscriber::count();
+
+        if ($count < 1) {
+            return;
+        }
+
+        $date = new \DateTime();
+        $subscribers = Subscriber::get(null, $count);
+
+        foreach ($subscribers as $subscriber) {
+            $subField = new SubscriberField();
+            $subField->setSubscriberId($subscriber->getId());
+            $subField->setFieldId($field->getId());
+            $subField->setValue(null);
+            $subField->setCreatedAt($date);
+            $subField->setUpdatedAt($date);
+            $subField->create();
+        }
     }
 }

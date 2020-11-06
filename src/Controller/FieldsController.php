@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\NotFoundException;
 use Mailer\Model\Field;
+use Mailer\Service\SubscriberService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -60,6 +61,9 @@ class FieldsController
 
         $field = Field::fromArray($json);
         $field->create();
+
+        $subscriberService = new SubscriberService();
+        $subscriberService->attachNewField($field);
 
         $result = ['result' => 'success', 'data' => $field];
 
