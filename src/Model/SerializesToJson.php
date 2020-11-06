@@ -14,6 +14,10 @@ trait SerializesToJson
 
             if (method_exists($this, $methodToCheck)) {
                 $collection[$name] = $this->$methodToCheck();
+            } elseif (is_array($value) and isset($value[0]) and $value[0] instanceof \JsonSerializable) {
+                $collection[$name] = $value;
+            } elseif ($value instanceof \JsonSerializable) {
+                $collection[$name] = $value;
             }
         }
 

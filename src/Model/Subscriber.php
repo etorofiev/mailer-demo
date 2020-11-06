@@ -89,11 +89,23 @@ class Subscriber implements JsonSerializable
         return $result;
     }
 
-    public function getFields(): array
+    public function getFieldsRelation(): array
     {
-        if (empty($fields)) {
-            throw new \LogicException('Cannot update a subscriber with empty properties');
+        if (empty($this->getId())) {
+            return [];
         }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+        $stmt = $pdo->prepare('SELECT * FROM subscribers_fields WHERE subscriber_id = :sub_id');
+
+        $stmt->bindValue(':sub_id', $this->getId(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_CLASS, SubscriberField::class);
+        $pool->releaseConnection($connection);
+        return $results;
     }
 
     /**

@@ -55,7 +55,7 @@ trait CommonReadMethods
         */
 
         if (static::hasAllProperties(array_keys($values)) === false) {
-            throw new \LogicException('Cannot update a subscriber with an unknown property');
+            throw new \LogicException('Cannot update a ' . static::$tableName . ' with an unknown property');
         }
 
         foreach ($values as $key => $value) {
@@ -98,6 +98,25 @@ trait CommonReadMethods
         $result = $stmt->fetchObject(static::class);
         $pool->releaseConnection($connection);
         return $result;
+    }
+
+    public static function findWhereIn(string $key, $values)
+    {
+        if (!property_exists(static::class, $key)) {
+            throw new \UnexpectedValueException('Property does not exist');
+        }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+        $in  = str_repeat('?,', count($values) - 1) . '?';
+        $stmt = $pdo->prepare("SELECT * FROM " . static::$tableName . " WHERE $key IN ($in)");
+
+        $stmt->execute($values);
+
+        $results = $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
+        $pool->releaseConnection($connection);
+        return $results;
     }
 
     public static function get(int $from = null, int $limit = null)

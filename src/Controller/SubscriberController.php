@@ -6,7 +6,7 @@ use GuzzleHttp\Psr7\Response;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\NotFoundException;
 use Mailer\Model\Subscriber;
-use Psr\Http\Message\RequestInterface;
+use Mailer\Service\SubscriberService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -39,7 +39,8 @@ class SubscriberController
     {
         $id = $args['id'];
 
-        $subscriber = Subscriber::find($id);
+        $subscriberService = new SubscriberService();
+        $subscriber = $subscriberService->find($id);
 
         $response = new Response();
         $response->getBody()->write(json_encode($subscriber));
