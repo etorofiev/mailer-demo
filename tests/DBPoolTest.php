@@ -11,7 +11,16 @@ class DBPoolTest extends TestCase
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
-        $dotenv->required(['MYSQL_MAX_CONNECTIONS', 'MYSQL_DB_HOST', 'MYSQL_DB_PORT', 'MYSQL_DB_NAME', 'MYSQL_DB_USER', 'MYSQL_DB_PASSWORD']);
+        $dotenv->required([
+            'MYSQL_MAX_CONNECTIONS',
+            'MYSQL_DB_HOST',
+            'MYSQL_DB_PORT',
+            'MYSQL_DB_NAME',
+            'MYSQL_DB_USER',
+            'MYSQL_DB_PASSWORD',
+            'MYSQL_DB_CHARSET',
+            'DEFAULT_RESULT_LIMIT'
+        ]);
     }
 
     public function testAcquireConnection()

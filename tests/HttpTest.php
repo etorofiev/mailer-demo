@@ -28,9 +28,9 @@ abstract class HttpTest extends TestCase
         $handle = curl_init($url);
         curl_setopt($handle, CURLOPT_URL, $url);
         curl_setopt($handle, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
 
-        switch($method) {
+        switch ($method) {
             case 'POST':
                 curl_setopt($handle, CURLOPT_POST, 1);
                 break;

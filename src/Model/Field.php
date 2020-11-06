@@ -33,7 +33,7 @@ class Field implements JsonSerializable
 
         $result = $pdo->lastInsertId();
         $this->id = $result;
-        $pool->releaseConnection($connection);;
+        $pool->releaseConnection($connection);
     }
 
     public function update($fields): int

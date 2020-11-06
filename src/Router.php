@@ -58,8 +58,11 @@ class Router
                 ->middleware(new SubscriberValidator());
             $route->map('DELETE', '/subscribers/{id:number}', [SubscriberController::class, 'delete']);
 
-            $route->map('PUT', '/subscribers/{id:number}/fields/{fid:number}', [SubscriberController::class, 'updateField'])
-                ->middleware(new ParsesJsonBodyMiddleware())
+            $route->map(
+                'PUT',
+                '/subscribers/{id:number}/fields/{fid:number}',
+                [SubscriberController::class, 'updateField']
+            )->middleware(new ParsesJsonBodyMiddleware())
                 ->middleware(new SubscriberFieldValidator());
 
             $route->map('GET', '/fields', [FieldsController::class, 'list']);
