@@ -77,6 +77,10 @@ class FieldsController
 
         $field = Field::find($id);
 
+        if (empty($field)) {
+            throw new NotFoundException('Field does not exist');
+        }
+
         if (!empty($json['title']) and $json['title'] !== $field->getTitle()) {
             $existingTitleField = Field::findBy('title', $json['title']);
 

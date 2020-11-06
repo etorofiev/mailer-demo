@@ -3,6 +3,8 @@
 namespace Mailer\Model;
 
 use JsonSerializable;
+use Mailer\DBPool;
+use PDO;
 
 class SubscriberField implements JsonSerializable
 {
@@ -16,6 +18,50 @@ class SubscriberField implements JsonSerializable
     private ?string $value;
     private string $created_at;
     private string $updated_at;
+
+    public function update($fields): int
+    {
+        if (empty($fields)) {
+            throw new \LogicException('Cannot update a field with empty properties');
+        }
+        if (empty($this->id)) {
+            throw new \LogicException('Cannot update a field with a missing ID');
+        }
+        if (static::hasAllProperties(array_keys($fields)) === false) {
+            throw new \LogicException('Cannot update a field with an unknown property');
+        }
+
+        $pool = DBPool::getInstance();
+        $connection = $pool->getConnection();
+        $pdo = $connection->getPdo();
+
+        $keys = array_keys($fields);
+        $sqlColumnsArray = array_map(fn ($x) => $x . ' = :' . $x, $keys);
+        $sqlColumns = implode(', ', $sqlColumnsArray);
+        $stmt = $pdo->prepare("UPDATE subscribers_fields SET $sqlColumns WHERE id = :id");
+
+        $paramFields = array_combine(array_map(fn ($x) => ':' . $x, $keys), $fields);
+
+        foreach ($paramFields as $param => $value) {
+            $stmt->bindValue($param, $value, PDO::PARAM_STR);
+        }
+        $stmt->bindValue(':id', $this->getId(), PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->rowCount();
+        $this->refresh($fields);
+        $pool->releaseConnection($connection);
+
+        return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     /**
      * @return int

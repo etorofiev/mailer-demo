@@ -10,7 +10,7 @@ trait SerializesToJson
         $collection = [];
 
         foreach ($props as $name => $value) {
-            $methodToCheck = 'get' . ucfirst($name);
+            $methodToCheck = 'get' . str_replace('_', '', ucwords($name, '_'));;
 
             if (method_exists($this, $methodToCheck)) {
                 $collection[$name] = $this->$methodToCheck();

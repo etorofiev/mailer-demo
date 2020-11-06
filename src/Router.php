@@ -12,6 +12,7 @@ use Mailer\Controller\SubscriberController;
 use Mailer\Middleware\JsonContentTypeMiddleware;
 use Mailer\Middleware\ParsesJsonBodyMiddleware;
 use Mailer\Middleware\Validator\FieldValidator;
+use Mailer\Middleware\Validator\SubscriberFieldValidator;
 use Mailer\Middleware\Validator\SubscriberValidator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -56,6 +57,10 @@ class Router
                 ->middleware(new ParsesJsonBodyMiddleware())
                 ->middleware(new SubscriberValidator());
             $route->map('DELETE', '/subscribers/{id:number}', [SubscriberController::class, 'delete']);
+
+            $route->map('PUT', '/subscribers/{id:number}/fields/{fid:number}', [SubscriberController::class, 'updateField'])
+                ->middleware(new ParsesJsonBodyMiddleware())
+                ->middleware(new SubscriberFieldValidator());
 
             $route->map('GET', '/fields', [FieldsController::class, 'list']);
             $route->map('GET', '/fields/{id:number}', [FieldsController::class, 'find']);
