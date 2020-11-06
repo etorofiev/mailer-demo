@@ -5,6 +5,7 @@ namespace Mailer\Controller;
 use GuzzleHttp\Psr7\Response;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\NotFoundException;
+use Mailer\EmailChecker;
 use Mailer\Model\Subscriber;
 use Mailer\Model\SubscriberField;
 use Mailer\Service\SubscriberService;
@@ -57,6 +58,12 @@ class SubscriberController
 
         if ($existingEmailSubscriber !== false) {
             throw new BadRequestException('A subscriber with this email already exists');
+        }
+
+        $emailChecker = new EmailChecker();
+
+        if (!$emailChecker->isEmailHostActive($json['email'])) {
+            throw new BadRequestException('The provided email address host is not active');
         }
 
         $subscriber = Subscriber::fromArray($json);

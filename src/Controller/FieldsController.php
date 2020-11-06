@@ -5,6 +5,7 @@ namespace Mailer\Controller;
 use GuzzleHttp\Psr7\Response;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\NotFoundException;
+use Mailer\EmailChecker;
 use Mailer\Model\Field;
 use Mailer\Service\SubscriberService;
 use Psr\Http\Message\ResponseInterface;
