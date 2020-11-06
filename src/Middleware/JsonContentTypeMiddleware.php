@@ -2,7 +2,7 @@
 
 namespace Mailer\Middleware;
 
-use GuzzleHttp\Psr7\Response;
+use League\Route\Http\Exception\UnsupportedMediaException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -16,14 +16,7 @@ class JsonContentTypeMiddleware implements MiddlewareInterface
         $contentType = $headers['Content-Type'][0];
 
         if (!empty($contentType) and strtolower($contentType) !== 'application/json') {
-            return new Response(
-                415,
-                ['Content-Type' => 'application/json'],
-                json_encode([
-                    'status' => 'error',
-                    'description' => 'Invalid content type, valid options are: application/json'
-                ])
-            );
+            throw new UnsupportedMediaException('Invalid content type, valid options are: application/json');
         }
 
         return $handler->handle($request);

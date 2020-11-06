@@ -40,11 +40,12 @@ class SubscriberHttpTest extends HttpTest
         $result = $this->request($url, 'POST', json_encode($data), ['Content-Type: application/json']);
 
         $this->assertEquals(200, $result['code']);
-        $bodyData = json_decode($result['body'], true)['data'];
-        $diff = array_diff_assoc($data, $bodyData);
+        $bodyData = json_decode($result['body'], true);
+        $this->assertArrayHasKey('data', $bodyData);
+        $diff = array_diff_assoc($data, $bodyData['data']);
         $this->assertEquals([], $diff);
 
-        return $bodyData['id'];
+        return $bodyData['data']['id'];
     }
 
     /**
@@ -59,11 +60,12 @@ class SubscriberHttpTest extends HttpTest
         $result = $this->request($url, 'PUT', json_encode($data), ['Content-Type: application/json']);
 
         $this->assertEquals(200, $result['code']);
-        $bodyData = json_decode($result['body'], true)['data'];
-        $diff = array_diff_assoc($data, $bodyData);
+        $bodyData = json_decode($result['body'], true);
+        $this->assertArrayHasKey('data', $bodyData);
+        $diff = array_diff_assoc($data, $bodyData['data']);
         $this->assertEquals([], $diff);
 
-        return $bodyData['id'];
+        return $bodyData['data']['id'];
     }
 
     /**

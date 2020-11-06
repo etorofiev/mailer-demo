@@ -8,12 +8,13 @@ use League\Route\Http\Exception\NotFoundException;
 use Mailer\Model\Subscriber;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SubscriberController
 {
     use ExtractsQueryParameters;
 
-    public function list(RequestInterface $request): ResponseInterface
+    public function list(ServerRequestInterface $request): ResponseInterface
     {
         $from = $this->getQueryParameter($request, 'from', FILTER_VALIDATE_INT);
         $limit = $this->getQueryParameter($request, 'limit', FILTER_VALIDATE_INT) ?? $_ENV['DEFAULT_RESULT_LIMIT'];
@@ -34,7 +35,7 @@ class SubscriberController
         return $response;
     }
 
-    public function find(RequestInterface $request, array $args): ResponseInterface
+    public function find(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 
@@ -46,10 +47,9 @@ class SubscriberController
         return $response;
     }
 
-    public function create(RequestInterface $request, array $args): ResponseInterface
+    public function create(ServerRequestInterface $request, array $args): ResponseInterface
     {
-        $body = $request->getBody()->getContents();
-        $json = json_decode($body, true);
+        $json = $request->getParsedBody();
 
         $existingEmailSubscriber = Subscriber::findBy('email', $json['email']);
 
@@ -68,12 +68,11 @@ class SubscriberController
         return $response;
     }
 
-    public function update(RequestInterface $request, array $args): ResponseInterface
+    public function update(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 
-        $body = $request->getBody()->getContents();
-        $json = json_decode($body, true);
+        $json = $request->getParsedBody();
 
         $subscriber = Subscriber::find($id);
 
@@ -95,7 +94,7 @@ class SubscriberController
         return $response;
     }
 
-    public function delete(RequestInterface $request, array $args): ResponseInterface
+    public function delete(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 

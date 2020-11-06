@@ -6,14 +6,14 @@ use GuzzleHttp\Psr7\Response;
 use League\Route\Http\Exception\BadRequestException;
 use League\Route\Http\Exception\NotFoundException;
 use Mailer\Model\Field;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class FieldsController
 {
     use ExtractsQueryParameters;
 
-    public function list(RequestInterface $request): ResponseInterface
+    public function list(ServerRequestInterface $request): ResponseInterface
     {
         $from = $this->getQueryParameter($request, 'from', FILTER_VALIDATE_INT);
         $limit = $this->getQueryParameter($request, 'limit', FILTER_VALIDATE_INT) ?? $_ENV['DEFAULT_RESULT_LIMIT'];
@@ -34,7 +34,7 @@ class FieldsController
         return $response;
     }
 
-    public function find(RequestInterface $request, array $args): ResponseInterface
+    public function find(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 
@@ -46,10 +46,9 @@ class FieldsController
         return $response;
     }
 
-    public function create(RequestInterface $request, array $args): ResponseInterface
+    public function create(ServerRequestInterface $request, array $args): ResponseInterface
     {
-        $body = $request->getBody()->getContents();
-        $json = json_decode($body, true);
+        $json = $request->getParsedBody();
 
         // Note: Remove the unique title constraint once the fields are attached
         // to companies or something similar
@@ -70,12 +69,11 @@ class FieldsController
         return $response;
     }
 
-    public function update(RequestInterface $request, array $args): ResponseInterface
+    public function update(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 
-        $body = $request->getBody()->getContents();
-        $json = json_decode($body, true);
+        $json = $request->getParsedBody();
 
         $field = Field::find($id);
 
@@ -97,7 +95,7 @@ class FieldsController
         return $response;
     }
 
-    public function delete(RequestInterface $request, array $args): ResponseInterface
+    public function delete(ServerRequestInterface $request, array $args): ResponseInterface
     {
         $id = $args['id'];
 
