@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "2af2fa34-1d1c-48ad-a293-6455a5ec3cdf",
+		"name": "mailer-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET subscribers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET subscribers paged",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers?from=6&limit=10",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "6"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET subscriber w/ fields",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST subscriber",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jane Doe\",\r\n    \"state\": \"active\",\r\n    \"email\": \"jane.doe@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT subscriber",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jane Doel\",\r\n    \"email\": \"jane.doel@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers/{{newSubscriberId}}",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers",
+						"{{newSubscriberId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE subscriber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers/{{newSubscriberId}}",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers",
+						"{{newSubscriberId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET fields",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{serverUrl}}api/fields",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"fields"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET fields paged",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST field",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"date\",\r\n    \"title\": \"Birthday\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/fields",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"fields"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT field",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Subscriber Birthday\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/fields/{{newFieldId}}",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"fields",
+						"{{newFieldId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE field",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/fields/{{newFieldId}}",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"fields",
+						"{{newFieldId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT subscriber field",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"value\": \"Black Sails\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{serverUrl}}api/subscribers/1/fields/1",
+					"protocol": "http",
+					"host": [
+						"{{serverUrl}}api"
+					],
+					"path": [
+						"subscribers",
+						"1",
+						"fields",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "0a1a76aa-5178-4c74-84f3-b15733a7b905",
+			"key": "serverUrl",
+			"value": "localhost:3000/"
+		},
+		{
+			"id": "44fbd512-1516-4d75-bdd3-19b2fcc02d97",
+			"key": "newSubscriberId",
+			"value": "21"
+		},
+		{
+			"id": "b6466d5a-1087-4396-86d2-05e6bc42fd07",
+			"key": "newFieldId",
+			"value": "6"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
