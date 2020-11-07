@@ -13,7 +13,11 @@ class JsonContentTypeMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $headers = $request->getHeaders();
-        $contentType = $headers['Content-Type'][0];
+        $contentType = null;
+
+        if (!empty($headers) and !empty($headers['Content-Type'])) {
+            $contentType = $headers['Content-Type'][0];
+        }
 
         if (!empty($contentType) and strtolower($contentType) !== 'application/json') {
             throw new UnsupportedMediaException('Invalid content type, valid options are: application/json');

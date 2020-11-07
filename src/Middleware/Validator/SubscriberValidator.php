@@ -42,7 +42,7 @@ class SubscriberValidator implements MiddlewareInterface
         }
 
         $validStateOptions = ['active', 'unsubscribed', 'junk', 'bounced', 'unconfirmed'];
-        if (!in_array($json['state'], $validStateOptions)) {
+        if (!empty($state) and !in_array($json['state'], $validStateOptions)) {
             throw new BadRequestException(
                 'Invalid state parameter value, valid options are: '
                 . implode(', ', $validStateOptions)
@@ -50,11 +50,13 @@ class SubscriberValidator implements MiddlewareInterface
         }
 
         // Sanity check for emails. There will be another one for the domain before we create the record
-        $email = $json['email'];
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-            throw new BadRequestException(
-                'The provided email is invalid'
-            );
+        if (!empty($json['email'])) {
+            $email = $json['email'];
+            if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                throw new BadRequestException(
+                    'The provided email is invalid'
+                );
+            }
         }
 
         return $handler->handle($request);
