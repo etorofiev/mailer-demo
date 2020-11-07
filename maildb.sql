@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS `subscribers_fields`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subscribers_fields` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `subscriber_id` int(11) NOT NULL,
   `field_id` int(11) NOT NULL,
   `value` varchar(1024) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
